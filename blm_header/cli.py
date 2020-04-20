@@ -94,7 +94,7 @@ def main():
         for i, blm in enumerate(header):
             b_count = header.count(blm)
             if b_count > 1:
-                logger.warning('\t'.join([blm, b_count, i]))
+                logger.warning('\t'.join([blm, str(b_count), str(i)]))
 
     file_name_to_file_stream(args.output, hm.t).write('\n'.join(header))
 
