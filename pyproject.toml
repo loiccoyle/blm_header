@@ -17,6 +17,10 @@ python = "^3.6.1"
 pytimber = "^3.0.0"
 pandas = "^1.0.3"
 numpy = "^1.18.3"
+tqdm = {version = "^4.45.0", optional = true}
+
+[tool.poetry.extras]
+progress = ['tqdm']
 
 [tool.poetry.scripts]
 blm_header = 'blm_header.cli:main'

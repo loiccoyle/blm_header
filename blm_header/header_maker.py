@@ -3,6 +3,14 @@ import time
 import logging
 import numpy as np
 import pandas as pd
+try:
+    from tqdm import tqdm
+except ImportError:
+    def tqdm(*args, **kwargs):
+        if args:
+            return args[0]
+        return kwargs.get('iterable', None)
+
 
 from functools import partial
 from collections import OrderedDict
@@ -122,10 +130,14 @@ class HeaderMaker:
             BLM_list = self._fetch_blm_var_list(**kwargs)
 
         if self._n_threads > 1:
-            self._logger.debug('Using threads.')
+            self._logger.debug(f'Using {self._n_threads} threads.')
             with ThreadPool(self._n_threads) as p:
-                out = p.map(lambda x: DB.get(x, self.t1, self.t2),
-                            np.array_split(BLM_list, self.n_threads))
+                out = list(tqdm(p.imap(lambda x: DB.get(x, self.t1, self.t2),
+                                       BLM_list,
+                                       # chunksize=len(BLM_list) // self._n_threads),
+                                       ),
+                                total=len(BLM_list),
+                                desc='Fetching BLM data'))
             # Merges list of dicts
             out = {k: v for d in out for k, v in d.items()}
         else:
@@ -206,8 +218,14 @@ class HeaderMaker:
         start_t = time.time()
         # calculate the distance matrix
         col_diff = partial(self._single_column_diff, single_data=single_data)
+        self._logger.debug(f"Using {self._n_jobs} jobs.")
         with Pool(self._n_jobs) as p:
-            res = p.map(col_diff, (c for _, c in vec_data.iteritems()))
+            res = list(tqdm(p.imap(col_diff,
+                                   (c for _, c in vec_data.iteritems()),
+                                   # chunksize=vec_data.shape[1] // self._n_jobs),
+                                   ),
+                            total=vec_data.shape[1],
+                            desc='Constructing distance matrix'))
 
         self._logger.info(f'Time elapsed: {time.time() - start_t}')
         return pd.DataFrame(res)
