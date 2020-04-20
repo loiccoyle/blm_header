@@ -8,8 +8,8 @@ pip install blm_header
 ```
 
 # Usage
-```shell
-$blm_header --help
+```
+$ blm_header --help
 
 usage: BLM_header [-h] [-t2 T2] [-f LOOK_FORWARD] [-b LOOK_BACK] [-n N_JOBS]
                   [-t N_THREADS] [-v] [-o OUTPUT]

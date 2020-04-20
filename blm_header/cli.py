@@ -35,7 +35,7 @@ def main():
                         help=('Time at which to create de header. int or '
                             'float: assumes utc time, converts to '
                             'pd.Timestamp and to Europe/Zurich timezone.'
-                            'str: a pd.to_datetime compatible str, assumes'
+                            'str: a pd.to_datetime compatible str, assumes '
                             'utc, converts to pd.Timestamp.')
                         )
     parser.add_argument('-t2',
