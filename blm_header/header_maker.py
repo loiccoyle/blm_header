@@ -12,6 +12,7 @@ except ImportError:
         return kwargs.get('iterable', None)
 
 
+from itertools import chain
 from functools import partial
 from collections import OrderedDict
 from multiprocessing import Pool
@@ -21,6 +22,7 @@ from multiprocessing.dummy import Pool as ThreadPool
 from .utils import DB
 from .utils import sanitize_t
 from .utils import no_limit_timber_get
+from .utils import chunkify
 
 
 class HeaderMaker:
@@ -216,15 +218,14 @@ class HeaderMaker:
         self._logger.info('Constructing distance matrix. This will take a while...')
         start_t = time.time()
         # calculate the distance matrix
-        col_diff = partial(self._single_column_diff, single_data=single_data)
+        col_diff = partial(self._multi_column_diff, single_data=single_data)
         self._logger.debug(f"Using {self._n_jobs} jobs.")
-        with Pool(self._n_jobs) as p:
-            res = list(tqdm(p.imap(col_diff,
-                                   (c for _, c in vec_data.iteritems()),
-                                   # chunksize=vec_data.shape[1] // self._n_jobs),
-                                   ),
-                            total=vec_data.shape[1],
-                            desc='Constructing distance matrix'))
+        with Pool(self._n_jobs, initializer=tqdm.set_lock, initargs=(tqdm.get_lock(),)) as p:
+            res = p.imap(col_diff,
+                               enumerate(chunkify([c for _, c in vec_data.iteritems()],
+                                                  self._n_jobs))
+                              )
+            res = list(chain(*res))
 
         self._logger.info(f'Time elapsed: {time.time() - start_t}')
         return pd.DataFrame(res)
@@ -252,19 +253,27 @@ class HeaderMaker:
         return series
 
     @staticmethod
-    def _single_column_diff(series, single_data):
-        '''Runs the diff of one of the vector numeric columns on each of the
-        individual blm data.
+    def _multi_column_diff(index_list_of_series, single_data):
 
-        Args:
-            series (pd.Series): column of the vector numeric dataframe.
-            single_data (dict): dict of the individual blm data.
 
-        Returns:
-            dict: dictionary with the blm name as keys and the result of the
-                diff as values.
-        '''
-        return {b: (series - s).abs().mean() for b, s in single_data.items()}
+        def _single_column_diff(series):
+            '''Runs the diff of one of the vector numeric columns on each of the
+            individual blm data.
+
+            Args:
+                series (pd.Series): column of the vector numeric dataframe.
+                single_data (dict): dict of the individual blm data.
+
+            Returns:
+                dict: dictionary with the blm name as keys and the result of the
+                    diff as values.
+            '''
+            return {b: (series - s).abs().mean() for b, s in single_data.items()}
+
+        i, list_of_series = index_list_of_series[0], index_list_of_series[1]
+        return [_single_column_diff(series) for series in tqdm(list_of_series,
+                                                               position=i,
+                                                               desc=f'Computing matrix chunk {i:02}')]
 
     @staticmethod
     def _distance_matrix_to_header(distance_matrix):

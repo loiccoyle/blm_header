@@ -71,3 +71,8 @@ def list_duplicates(seq):
         tally[item].append(i)
     return ((key,locs) for key,locs in tally.items() if len(locs)>1)
 
+
+def chunkify(a, n):
+	k, m = divmod(len(a), n)
+	return [a[i * k + min(i, m):(i + 1) * k + min(i + 1, m)] for i in range(n)]
+
