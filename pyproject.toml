@@ -10,7 +10,7 @@ classifiers=[
     'Programming Language :: Python',
 ]
 readme = "README.md"
-repository = 'https://github.com/loiccoyle/BLM_header'
+repository = 'https://github.com/loiccoyle/blm_header'
 
 [tool.poetry.dependencies]
 python = "^3.6.1"
