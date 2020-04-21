@@ -60,6 +60,17 @@ optional arguments:
                         "{t}" will be replaced with the requested time.
 						(default: stdout)
 ```
+##### Some examples:
+
+To generate the BLM header for '2018-01-01 00:00:00' and write it in '2018-01-01 00:00:00.csv':
+```shell
+$ blm_header '2018-01-01 00:00:00' -o {t}.csv
+```
+
+To generate the BLM header for epoch time 1457964768.0 (2016-03-14 15:12:48+0100) and write it in '2016-03-14 15:12:48+0100.csv' with verbose output:
+```shell
+$ blm_header 1457964768.0 -o {t}.csv -v
+```
 
 ### The `HeaderMaker` class:
 For use in python, this package also provides the `HeaderMaker` class.
