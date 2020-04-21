@@ -7,12 +7,15 @@ with open("README.md") as fh:
 setup(
     name='blm_header',
     url='https://github.com/loiccoyle/blm_header',
-    description='Bruteforce the LHC\'s BLM header.',
+    description='Bruteforce the LHC\'s BLM headers.',
     long_description=LONG_DESCRIPTION,
     author='Loic Coyle',
     author_email='loic.thomas.coyle@cern.ch',
     packages=['blm_header'],
     install_requires=['numpy', 'pandas', 'pytimber'],
+    extras_require = {
+		      'progress':  ["tqdm"]
+		     },
     python_requires='>=3.6',
     classifiers=[
         'Intended Audience :: Developers',
@@ -21,4 +24,3 @@ setup(
     ],
 )
 
-__author__ = 'Loic Coyle'
