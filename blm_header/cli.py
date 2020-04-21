@@ -89,7 +89,8 @@ def main():
     header = hm.make_header()
 
     if len(set(header)) != len(header):
-        logger.warning('There are duplicates in the header !')
+        logger.warning('There are duplicates in the header !'
+		       ' Consider increasing the look back/forward amounts.')
         for i, blm in enumerate(header):
             b_count = header.count(blm)
             if b_count > 1:
