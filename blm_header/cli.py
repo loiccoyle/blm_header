@@ -3,6 +3,8 @@ import logging
 import argparse
 
 from .header_maker import HeaderMaker
+from .utils import list_duplicates
+
 
 def str_or_float(str_float):
     '''Tries to convert string to float.
@@ -91,10 +93,8 @@ def main():
     if len(set(header)) != len(header):
         logger.warning('There are duplicates in the header !'
 		       ' Consider increasing the look back/forward amounts.')
-        for i, blm in enumerate(header):
-            b_count = header.count(blm)
-            if b_count > 1:
-                logger.warning('\t'.join([blm, str(b_count), str(i)]))
+        for blm, dupe_indices in list_duplicates(header):
+            logger.warning(f'BLM "{blm}" appears {len(dupe_indices)} times at indices {dupe_indices}')
 
     file_name_to_file_stream(args.output, hm.t).write('\n'.join(header))
 

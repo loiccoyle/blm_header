@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "blm_header"
-version = "1.0.0"
+version = "1.0.1"
 description = "Brute force the LHC's BLM headers."
 authors = ["Loic Coyle <loic.coyle@hotmail.fr>"]
 license = "MIT"

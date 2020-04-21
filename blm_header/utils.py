@@ -1,6 +1,7 @@
 import pytimber
 import numpy as np
 import pandas as pd
+from collections import defaultdict
 
 
 def get_timber_db(*args, **kwargs):
@@ -62,4 +63,11 @@ def no_limit_timber_get(variables, t1, t2, **kwargs):
             out[k] = (np.hstack([out1[k][0], out2[k][0]]),
                       np.vstack([out1[k][1], out2[k][1]]))
     return out
+
+
+def list_duplicates(seq):
+    tally = defaultdict(list)
+    for i,item in enumerate(seq):
+        tally[item].append(i)
+    return ((key,locs) for key,locs in tally.items() if len(locs)>1)
 
