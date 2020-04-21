@@ -70,8 +70,7 @@ def main():
     parser.add_argument('-o',
                         '--output',
                         help=("File in which to write the header. The placeholder "
-                              "the \"{t}\" placeholder will be replaced with the "
-                              "requested time."),
+                              "\"{t}\" will be replaced with the requested time."),
                         default='stdout')
     args = parser.parse_args()
 

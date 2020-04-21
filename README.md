@@ -42,7 +42,7 @@ optional arguments:
   -v, --verbose         Verbosity, -v for INFO level, -vv for DEBUG level.
                         (default: 0)
   -o OUTPUT, --output OUTPUT
-                        File in which to write the header. The placeholder the
-                        "{t}" placeholder will be replaced with the requested
-                        time. (default: stdout)
+                        File in which to write the header. The placeholder
+                        "{t}" will be replaced with the requested time.
+						(default: stdout)
 ```
