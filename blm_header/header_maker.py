@@ -96,7 +96,7 @@ class HeaderMaker:
         data = out[1]
         if data.size == 0:
             raise ValueError('No vectornumeric data in time range '
-                             f'{self.t1} -> {self.t2}.')
+                             f'[{self.t1} -> {self.t2}].')
         df = pd.DataFrame(np.hstack([data, timestamps]))
         df.iloc[:, -1] = pd.to_datetime(df.iloc[:, -1], unit='s', utc=True)\
             .dt.tz_convert('Europe/Zurich')
@@ -157,7 +157,7 @@ class HeaderMaker:
     def _fetch_blm_var_list(timber_filter='BLM%:LOSS_RS09',
                             reg_filter=None):
                             # reg_filter='BLM.[IL]'):
-        """Gets a list of all the BLM respecting the filtering from timber.
+        """Gets a list of all the BLM, respecting the filtering, from timber.
 
         Args:
             timber_filter (str, optional): filtering when fetching from timber,
@@ -177,8 +177,7 @@ class HeaderMaker:
 
         return out
 
-    def make_header(self, vec_data=None, single_data=None,
-                    fall_back_header=None, **kwargs):
+    def make_header(self, vec_data=None, single_data=None, **kwargs):
         """Makes the header. Note, this takes a long time... and there is not guarantee
         that the header is correct.
 
@@ -187,7 +186,7 @@ class HeaderMaker:
                 data. If None will fetch the vectornumeric data.
             single_data (dict): dictionary containing the individual BLM data.
                 If None will fetch individual BLM data.
-            **kwargs: blm filtering, see self.fetch_single_data.
+            **kwargs: blm filtering, see self.fetch_single.
 
         Returns:
             list: the header, a list of blm names.
