@@ -19,7 +19,7 @@ def file_name_to_file_stream(file_str, time_str):
     if file_str == 'stdout':
         return sys.stdout
     else:
-        file_str = file_str.format(t=time_str)
+        file_str = file_str.format(t=time_str.strftime('%Y_%m_%d_%H_%M_%S%z'))
         return argparse.FileType('w')(file_str)
 
 

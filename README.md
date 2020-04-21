@@ -62,12 +62,12 @@ optional arguments:
 ```
 ##### Some examples:
 
-To generate the BLM header for '2018-01-01 00:00:00' and write it in '2018-01-01 00:00:00.csv':
+To generate the BLM header for '2018-01-01 00:00:00' and write it in '2018_01_01_00_00_00+0100.csv':
 ```shell
 $ blm_header '2018-01-01 00:00:00' -o {t}.csv
 ```
 
-To generate the BLM header for epoch time 1457964768.0 (2016-03-14 15:12:48+0100) and write it in '2016-03-14 15:12:48+0100.csv' with verbose output:
+To generate the BLM header for epoch time 1457964768.0 (2016-03-14 15:12:48+0100) and write it in '2016_03_14_15_12_48+0100.csv' with verbose output:
 ```shell
 $ blm_header 1457964768.0 -o {t}.csv -v
 ```
