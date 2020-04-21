@@ -1,4 +1,5 @@
 # blm_header
+[![pypi](https://img.shields.io/pypi/v/blm_header)](https://pypi.org/project/blm-header/)
 
 Brute force the LHC's BLM headers.
 
