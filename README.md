@@ -82,3 +82,8 @@ from blm_header import HeaderMaker
 hm = HeaderMaker('2018-01-01 00:00:00', look_back='0S', look_forward='60M', n_threads=1)
 header = hm.make()
 ```
+
+# How it works
+For a given a time range, `blm_header` will fetch the BLM vector numeric data along with the data of the individual BLMs in the timber database. Unfortunately, the single BLM timber entries suffer from sporatic downsampling and as such cannot be compared trivially with the vector numeric data. Leveraging the power of `pandas` for dealing with time indexed data, we can overcome this. A distance matrix is constructed between the columns of the vector numeric data and the individual BLM signals, with the distance metric being: `mean(abs(v - s))`, with `v` being a column of the vector numeric data and `s` the data of a single BLM. Each columns (BLM) of the vector numeric data is then assigned the BLM which minimizes this distance.
+
+Note: Despite the vast majority of the BLMs being correctly assigned, I have found that the header produced can contain duplicate BLM names.
