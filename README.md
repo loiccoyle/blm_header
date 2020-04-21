@@ -7,7 +7,21 @@ Brute force the LHC's BLM header.
 pip install blm_header
 ```
 
+# Dependencies
+* `numpy`
+* `pandas`
+* `pytimber`
+
+Optional:
+* `tqdm` (for progress bars)
+
+
 # Usage
+This `blm_header` package provides the `HeaderMaker` class along with a command line tool, `blm_header`.
+
+### `blm_header` command line tool
+
+The `blm_header` command will generate a header for the given timestamp.
 ```
 $ blm_header --help
 
@@ -45,4 +59,15 @@ optional arguments:
                         File in which to write the header. The placeholder
                         "{t}" will be replaced with the requested time.
 						(default: stdout)
+```
+
+### The `HeaderMaker` class:
+For use in python, this package also provides the `HeaderMaker` class.
+
+The basic usage is:
+```python
+from blm_header import HeaderMaker
+
+hm = HeaderMaker('2018-01-01 00:00:00', look_back='0S', look_forward='60M', n_threads=1)
+header = hm.make()
 ```
