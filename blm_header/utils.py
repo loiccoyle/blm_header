@@ -1,6 +1,7 @@
 import pytimber
 import numpy as np
 import pandas as pd
+from datetime import datetime
 from collections import defaultdict
 
 
@@ -35,11 +36,14 @@ def sanitize_t(t):
         t = pd.to_datetime(t, unit='s', utc=True).tz_convert('Europe/Zurich')
     elif isinstance(t, str):
         t = pd.to_datetime(t)
-    if isinstance(t, pd.Timestamp):
-        if t.tz is None:
-            t = t.tz_localize('Europe/Zurich')
-        elif t.tz.zone != 'Europe/Zurich':
-            t = t.tz_convert('Europe/Zurich')
+    elif isinstance(t, datetime):
+        t = pd.to_datetime(t, utc=True)
+    else:
+        raise TypeError(f'Can\'t figure out how to convert "{t}".')
+    if t.tz is None:
+        t = t.tz_localize('Europe/Zurich')
+    elif t.tz.zone != 'Europe/Zurich':
+        t = t.tz_convert('Europe/Zurich')
     return t
 
 

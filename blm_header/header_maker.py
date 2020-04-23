@@ -36,8 +36,7 @@ class HeaderMaker:
                  n_threads=512):
         """Makes timber's vector numeric BLM header for a given timestamp. By
         brute forcely determining which column corresponds to which individual
-        BLM timber variable. Building the header can be quite slow ~45 mins per
-        header...
+        BLM timber variable. Building the header can be quite slow.
 
         Args:
             t (int, float, str):
@@ -220,14 +219,15 @@ class HeaderMaker:
         # calculate the distance matrix
         col_diff = partial(self._multi_column_diff, single_data=single_data)
         self._logger.debug(f"Using {self._n_jobs} jobs.")
+        # Split the vec_data into chunks for more efficient multiprocessing
         with Pool(self._n_jobs, initializer=tqdm.set_lock, initargs=(tqdm.get_lock(),)) as p:
             res = p.imap(col_diff,
-                               enumerate(chunkify([c for _, c in vec_data.iteritems()],
-                                                  self._n_jobs))
-                              )
+                         enumerate(chunkify([c for _, c in vec_data.iteritems()],
+                                            self._n_jobs))
+                        )
             res = list(chain(*res))
 
-        self._logger.info(f'Time elapsed: {time.time() - start_t}')
+        self._logger.info(f'Time elapsed: {round(time.time() - start_t)}s')
         return pd.DataFrame(res)
 
     @staticmethod
@@ -254,7 +254,17 @@ class HeaderMaker:
 
     @staticmethod
     def _multi_column_diff(index_list_of_series, single_data):
+        """Run the distance calculation on a chunk of the vec_data. This is run
+        in one multiprocessing job.
 
+        Args:
+            index_list_of_series (tuple(int, list)): tuple of (progress bar position,
+                 list of vec_data columns).
+            single_data (dict): dict of the individual blm data.
+
+        Returns:
+            list: a list of dicts.
+        """
 
         def _single_column_diff(series):
             '''Runs the diff of one of the vector numeric columns on each of the
@@ -262,7 +272,6 @@ class HeaderMaker:
 
             Args:
                 series (pd.Series): column of the vector numeric dataframe.
-                single_data (dict): dict of the individual blm data.
 
             Returns:
                 dict: dictionary with the blm name as keys and the result of the
@@ -270,10 +279,14 @@ class HeaderMaker:
             '''
             return {b: (series - s).abs().mean() for b, s in single_data.items()}
 
+        # i is the position of the progress bar
+        # list_of_series if the chunk of vector numeric columns on which ot run
+        # the computation
         i, list_of_series = index_list_of_series[0], index_list_of_series[1]
         return [_single_column_diff(series) for series in tqdm(list_of_series,
                                                                position=i,
-                                                               desc=f'Computing matrix chunk {i:02}')]
+                                                               desc=f'Computing matrix chunk {i:02}',
+                                                               leave=False)]
 
     @staticmethod
     def _distance_matrix_to_header(distance_matrix):
