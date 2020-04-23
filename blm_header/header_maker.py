@@ -220,7 +220,7 @@ class HeaderMaker:
         col_diff = partial(self._multi_column_diff, single_data=single_data)
         self._logger.debug(f"Using {self._n_jobs} jobs.")
         # Split the vec_data into chunks for more efficient multiprocessing
-        with Pool(self._n_jobs, initializer=tqdm.set_lock, initargs=(tqdm.get_lock(),)) as p:
+        with Pool(self._n_jobs) as p:
             res = p.imap(col_diff,
                          enumerate(chunkify([c for _, c in vec_data.iteritems()],
                                             self._n_jobs))
