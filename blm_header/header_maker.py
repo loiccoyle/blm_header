@@ -1,7 +1,7 @@
 import logging
 import re
 import time
-from typing import List, Optional, Union
+from typing import List, Optional, Tuple, Union
 
 import numpy as np
 import pandas as pd
