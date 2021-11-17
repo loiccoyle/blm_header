@@ -94,7 +94,7 @@ class HeaderMaker:
         data = out[1]
         if data.size == 0:
             raise ValueError(
-                "No vectornumeric data in time range [%s -> %s].", self.t1, self.t2
+                f"No vectornumeric data in time range [{self.t1} -> {self.t2}]."
             )
         df = pd.DataFrame(np.hstack([data, timestamps]))
         df.iloc[:, -1] = pd.to_datetime(
