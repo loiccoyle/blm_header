@@ -1,11 +1,12 @@
 # blm_header
-[![pypi](https://img.shields.io/pypi/v/blm_header)](https://pypi.org/project/blm-header/)
 
 Brute force the LHC's BLM headers.
 
 # Installation
 ```shell
-pip install blm_header
+git clone https://github.com/loiccoyle/blm_header
+de blm_header
+pip install .
 ```
 
 # Dependencies
