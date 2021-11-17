@@ -57,19 +57,23 @@ def main():
     parser.add_argument(
         "-f",
         "--look_forward",
-        help=('Look forward amount, time format string, "1M", ' '"4H", ...'),
+        help='Look forward amount, time format string, "1M", "4H", ...',
         default="30M",
         type=str,
     )
     parser.add_argument(
         "-b",
         "--look_back",
-        help=('Look back amount, time format string, "1M", ' '"4H", ...'),
+        help='Look back amount, time format string, "1M", "4H", ...',
         default="30M",
         type=str,
     )
     parser.add_argument(
-        "-n", "--n_jobs", help="Number of parallel jobs.", default=-1, type=int
+        "-n",
+        "--n_jobs",
+        help="Number of parallel jobs.",
+        default=-1,
+        type=int,
     )
     parser.add_argument(
         "-t",
@@ -119,7 +123,10 @@ def main():
         )
         for blm, dupe_indices in list_duplicates(header):
             logger.warning(
-                f'BLM "{blm}" appears {len(dupe_indices)} times at indices {dupe_indices}'
+                'BLM "%s" appears %i times at indices %s',
+                blm,
+                len(dupe_indices),
+                dupe_indices,
             )
 
     file_name_to_file_stream(args.output, hm.t).write("\n".join(header))

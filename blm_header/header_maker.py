@@ -79,12 +79,11 @@ class HeaderMaker:
         self._n_threads = n_threads
 
     def fetch_vec(self) -> pd.DataFrame:
-        """Fetches the vector numeric data from timber, and converts it to
-        dataframe.
+        """Fetches the vector numeric data from timber, and converts it to dataframe.
 
         Returns:
-            pd.DataFrame: pd.DataFrame of the vector numeric data with as index
-                the timestamp in Europe/Zurich timezone.
+            `pd.DataFrame` of the vector numeric data with as index the timestamp
+                in Europe/Zurich timezone.
         """
         self._logger.info("Fetching vector numeric data.")
 
@@ -126,7 +125,7 @@ class HeaderMaker:
             reg_filter: additional regex filtering.
 
         Returns:
-            dicitonary containing as keys, the blm name and as values, pd.Series
+            dicitonary containing as keys, the blm name and as values, `pd.Series`
                 of the data.
         """
         self._logger.info("Fetching individual BLM data.")
@@ -194,8 +193,10 @@ class HeaderMaker:
         single_data: Optional[dict] = None,
         **kwargs,
     ) -> List[str]:
-        """Makes the header. Note, this takes a long time... and there is not guarantee
-        that the header is correct.
+        """Makes the header.
+
+        Note: this takes a long time... and there is not guarantee that the header
+            is correct.
 
         Args:
             vec_data: pd.DataFrame containing the vectornumeric data. If None will
@@ -205,7 +206,7 @@ class HeaderMaker:
             **kwargs: blm filtering, see self.fetch_single.
 
         Returns:
-            the header, a list of blm names.
+            The header, a list of blm names.
         """
         if vec_data is None:
             vec_data = self.fetch_vec()
@@ -290,10 +291,10 @@ class HeaderMaker:
             individual blm data.
 
             Args:
-                series: column of the vector numeric dataframe.
+                series: Column of the vector numeric dataframe.
 
             Returns:
-                dictionary with the blm name as keys and the result of the diff as values.
+                Dictionary with the blm name as keys and the result of the diff as values.
             """
             return {b: (series - s).abs().mean() for b, s in single_data.items()}
 
