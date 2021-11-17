@@ -28,3 +28,8 @@ blm_header = 'blm_header.cli:main'
 [build-system]
 requires = ["poetry>=0.12"]
 build-backend = "poetry.masonry.api"
+
+[[tool.poetry.source]]
+name = "accpy"
+url = "http://acc-py-repo.cern.ch:8081/repository/vr-py-releases/simple"
+default = true
