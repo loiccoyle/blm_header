@@ -5,7 +5,7 @@ Brute force the LHC's BLM headers.
 # Installation
 ```shell
 git clone https://github.com/loiccoyle/blm_header
-de blm_header
+cd blm_header
 pip install .
 ```
 
