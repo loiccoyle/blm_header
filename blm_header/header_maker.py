@@ -34,7 +34,7 @@ class HeaderMaker:
         t2: Optional[Union[float, str]] = None,
         vec_var: str = "LHC.BLMI:LOSS_RS09",
         n_jobs: int = -1,
-        n_threads: int = 32,
+        n_threads: int = 512,
     ):
         """Makes timber's vector numeric BLM header for a given timestamp. By
         brute forcely determining which column corresponds to which individual
